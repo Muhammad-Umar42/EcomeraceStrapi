@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useMedia } from "@/helpers/useMedia";
+import Link from "next/link";
 
 const Products = () => {
   const [data, setData] = useState([]);
@@ -22,7 +24,8 @@ const Products = () => {
     fetchData();
   }, []);
 
-  
+  const { getUrl } = useMedia();
+
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-24 mx-auto">
@@ -40,21 +43,29 @@ const Products = () => {
               <div key={item.id} className="xl:w-1/4 md:w-1/2 p-4">
                 <div className="bg-gray-100 p-6 rounded-lg">
                   <img
-                    className="h-40 rounded w-full object-cover object-center mb-6"
-                    src={
-                      item.attributes.image.data &&
-                      item.attributes.image.url}
-                    alt="content"
+                    className="h-96 rounded w-full object-center mb-6"
+                    src={getUrl(item.attributes.image)}
+                    alt="product image"
                   />
                   <h3 className="tracking-widest text-indigo-500 text-xs font-medium title-font">
                     {item.attributes.catagries}
                   </h3>
-                  <h2 className="text-lg text-gray-900 font-medium title-font mb-4">
+                  <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
                     {item.attributes.title}
                   </h2>
+                  <div className="hidden bg-gray-800 bg-orange-800"></div>
+                  <button
+                    class={
+                      "rounded-full w-6 h-6 p-0 border-0 " +
+                      `bg-${item.attributes.color}-800`
+                    }
+                  ></button>
                   <p className="leading-relaxed text-base">
                     {item.attributes.description}
                   </p>
+                 <Link href={`/product/${item.attributes.slug}`}> <button className=" text-white bg-black border-0 py-2 px-4 mt-4  focus:outline-none hover:bg-gray-700 rounded text-sm">
+                    But Now
+                  </button></Link>
                 </div>
               </div>
             );
